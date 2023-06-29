@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
+const List<int> choiceTime = <int>[5, 10, 15, 20, 25, 30, 45, 50, 60, 90, 120];
+
 class CountDownPage extends StatefulWidget {
   const CountDownPage(this.timerName, {super.key});
 
@@ -11,9 +13,11 @@ class CountDownPage extends StatefulWidget {
 }
 
 class _CountDownPageState extends State<CountDownPage> {
+  int isSelectedValue = choiceTime.first;
+
   final _stopWatchTimer = StopWatchTimer(
     mode: StopWatchMode.countDown,
-    presetMillisecond: 1000 * 60,
+    presetMillisecond: 5 * 60000,
   );
 
   final _scrollController = ScrollController();
@@ -43,6 +47,22 @@ class _CountDownPageState extends State<CountDownPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Text('合計_時間_分'),
+            DropdownButton(
+              items: choiceTime.map<DropdownMenuItem<int>>((int value) {
+                return DropdownMenuItem<int>(
+                  value: value,
+                  child: Text('$value分'),
+                );
+              }).toList(),
+              value: isSelectedValue,
+              onChanged: (int? value) {
+                setState(() {
+                  isSelectedValue = value!;
+                  _stopWatchTimer.setPresetTime(mSec: value * 10000);
+                });
+              },
+            ),
             StreamBuilder<int>(
               stream: _stopWatchTimer.rawTime,
               initialData: _stopWatchTimer.rawTime.value,

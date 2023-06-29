@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TimerListAddPage extends StatefulWidget {
   const TimerListAddPage({super.key});
@@ -36,10 +37,13 @@ class _TimerListAddPageState extends State<TimerListAddPage> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   Navigator.of(context).pop((_text));
+                  await FirebaseFirestore.instance
+                      .collection('timers')
+                      .add({'name': _text});
                 },
-                child: const Text('タイマー追加'),
+                child: const Text('追加'),
               ),
             ),
             const SizedBox(height: 8),
