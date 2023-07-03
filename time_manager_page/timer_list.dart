@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:time_manager_app/timer_page/countdown_timer.dart';
 
 class TimerList extends StatelessWidget {
